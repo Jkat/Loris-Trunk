@@ -6,8 +6,8 @@ $client->initialize("../../project/config.xml");
 
 // create Database object
 $DB =& Database::singleton();
-if(PEAR::isError($DB)) { 
-    print "Could not connect to database: ".$DB->getMessage()."<br>\n"; die(); 
+if(PEAR::isError($DB)) {
+    print "Could not connect to database: ".$DB->getMessage()."<br>\n"; die();
 }
 
 $action = $_POST['action'];
@@ -32,11 +32,11 @@ if ($action == 'upload')
         mkdir($base_path . $user, 0777);
     }
 
-    $target_path = $base_path  . $user . "/" . $fileName;  
+    $target_path = $base_path  . $user . "/" . $fileName;
 
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path))
     {
-        $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user)); 
+        $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user, 'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit)); 
 
         header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
     }
@@ -52,7 +52,7 @@ elseif ($action == 'edit')
 {
     $id = $_POST['idEdit'];
     $category = $_POST['categoryEdit'];
-    $instrument = $_POST['nameEdit'];
+    $instrument = $_POST['instrumentEdit'];
     $site = $_POST['siteEdit'];
     $pscid = $_POST['pscidEdit'];
     $visit = $_POST['visitEdit'];

@@ -26,7 +26,8 @@
     <tr>
 
         <td colspan="6" align="right"><input type="submit" name="filter" value="Show Data" class="button" />&nbsp;<input type="button" name="reset" value="Clear Form" class="button" onclick="location.href='main.php?test_name=document_repository&reset=true'" /></td>
-	    <td align="right"><button id = "upload" name = "upload" class = "button" style = "background-color: #1C70B6">Upload File</button></td>
+	    <td align="right"><button id = "upload" name = "upload" class = "button" style = "background-color: #696">Upload File</button></td>
+            <td align="right"><button id = "addCategory" name = "addCategory" class = "button" onclick="return false;">Add Category</button></td>
     </tr>
 </table>
 </form>
@@ -50,17 +51,22 @@
 {foreach from=$File_categories item=val key=k}
     {if $val != "Any"}
 	<tr>
-	{if $val != "Minutes"}
-        <td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px;"><span></span>{$val}s</h3>
-	{else}
-        <td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px;"><span></span>{$val}</h3>
-	{/if}
-</tr>
+        	<td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val|replace:' ':'_'|replace:'>':'_'}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px;">{$val}
+			<span class="tip">...
+                        {foreach from=$File_comments item=val2 key=k2}
+                                {if $k == $k2}
+					<span>{$val2}</span>
+                                {/if}
+                        {/foreach}
+			</span>
+		</h3>
+	</tr>
 
 {section name=item loop=$items}
     {section name=piece loop=$items[item]}
-	{if $items[item][piece].value == $k}
-	<tr  class="categories_{$val} categories ui-accordion ui-widget ui-helper-reset ui-accordion-icons" id = "{$smarty.section.item.index}" style="display:yes">
+	{* if $items[item][piece].value == $k *}
+	{if $items[item][piece].File_category == $k}
+	<tr class="categories_{$val|replace:' ':'_'|replace:'>':'_'} categories ui-accordion ui-widget ui-helper-reset ui-accordion-icons" id = "{$smarty.section.item.index}" style="display:yes">
 	    {section name=piece loop=$items[item]}
 		{if $items[item][piece].name == "File_name"}
 		    <td nowrap = "nowrap" class = "{$items[item][piece].name}"><a href="{$items[item][piece].Data_dir}" target="_blank">{$items[item][piece].value}</a> {if !empty($items[item][piece].File_size)}({$items[item][piece].File_size}){/if}</td>
@@ -77,6 +83,7 @@
 	    {/section}
 	</tr>
 	{/if}
+	{* /if *}
     {/section}
 {/section}
     </tr>
@@ -91,6 +98,31 @@
 	    Are you sure you want to delete this file?
     </p>
 </div>
+</div>
+
+<div class = "dialog">
+<form id="addCategory" action="DocumentRepository/addCategory.php" method="POST">
+<div class = "addCategory" title="Add Category">
+    <p>
+        <span class="ui-icon ui-icon-trash" style="float:left; margin:0 7px 50px 0;"></span>
+            What category would you like to add?
+    </p>
+<fieldset id="addCategoryForm" style = "border: none;">
+	Category Name: <input type="text" name="category_name" />
+	<br>
+	Parent: 
+        <select name="parent_id" id = "parent_id" class = "form-fields">
+        <option value=" "> </option>
+            {foreach from = $File_categories item=val key=k}
+                {if $val != "Any"}
+                        <option value={$k}>{$val}</option>
+                    {/if}
+            {/foreach}
+        </select>
+	Comments: <input type="text" name="comments" />
+</fieldset>
+</div>
+</form>
 </div>
 
 
@@ -116,7 +148,7 @@
 	    {foreach from = $File_categories item=val key=k}
 	        {if $val != "Any"}
  		        <option value={$k}>{$val}</option>
-		    {/if} 
+		{/if}
 	    {/foreach}
 	</select>
 	</br></br>
@@ -129,7 +161,7 @@
 	</select>
 	</br></br>
 	<label for="name">Instrument name</label>
-	<input type="text" size = "27" name="name" id="name" class="ui-corner-all form-fields" /></br></br>
+	<input type="text" size = "27" name="instrument" id="instrument" class="ui-corner-all form-fields" /></br></br>
 	<label for="pscid">PSCID</label>
 	<input type="text" size = "27" name="pscid" id="pscid" class="ui-corner-all form-fields" /></br></br>
 	<label for="visit">Visit label</label>
@@ -182,7 +214,7 @@
 	</select>
 	</br></br>
         <label for="name">Instrument name</label>
-        <input type="text" size = "27" name="name" id="nameEdit" class="ui-corner-all form-fields" /></br></br>
+        <input type="text" size = "27" name="name" id="instrumentEdit" class="ui-corner-all form-fields" /></br></br>
         <label for="pscid">PSCID</label>
         <input type="text" size = "27" name="pscid" id="pscidEdit" class="ui-corner-all form-fields" /></br></br>
         <label for="visit">Visit label</label>
@@ -214,6 +246,13 @@
     <p>
 	    <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
 	    The file was successfully deleted. Loading changes...
+    </p>
+</div>
+
+<div class = "add-success">
+    <p>
+            <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
+            New category successfully added!
     </p>
 </div>
 
