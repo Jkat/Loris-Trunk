@@ -125,7 +125,6 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
 	        }
         }
 
-
 	    foreach($fileT as $fileType) {
 		    $fileTypes[$fileType['File_type']] = $fileType['File_type'];
         }
@@ -136,12 +135,18 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
         // Form Elements
         $this->addBasicText('File_name', 'File name:'); 
         $this->addBasicText('version', 'Version:'); 
-	
-	    $fileCategories = array(null=>'Any', 'abstract'=>'Abstract', 'audio_visual'=>'Audio-visual', 'instrument'=>'Instrument', 'manual'=>'Manual', 'minutes'=>'Minutes', 'paper'=>"Paper", 'presentation'=>'Presentation', 'protocol'=>'Protocol', 'spreadsheet_table'=>'Spreadsheets-Table', 'other'=>'Other');
+
+	$IDCategories = $DB->pselect("SELECT id,category_name,parent_id,comments FROM document_repository_categories order by parent_id", array());	
+	foreach ($IDCategories as $key=>$value) {
+		$fileCategories[$value['id']] = $this->parseCategory($value);
+		$fileComments[$value['id']] = $value['comments'];
+	}
+//	    $fileCategories = array(null=>'Any', 'abstract'=>'Abstract', 'audio_visual'=>'Audio-visual', 'instrument'=>'Instrument', 'manual'=>'Manual', 'minutes'=>'Minutes', 'paper'=>"Paper", 'presentation'=>'Presentation', 'protocol'=>'Protocol', 'spreadsheet_table'=>'Spreadsheets-Table', 'other'=>'Other');
 
         $this->addSelect('File_type', 'File type:', $fileTypes); 
         $this->addSelect('File_category', 'File category:', $fileCategories); 
 	    $this->tpl_data['File_categories'] = $fileCategories;
+	    $this->tpl_data['File_comments'] = $fileComments;
 	    $this->tpl_data['Sites'] = $list_of_sites;
 	    $user =& User::singleton();
 	    $userID = $user->getData('UserID');
@@ -152,7 +157,18 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
         return true;
     }
 
-
+    function parseCategory($value) {
+	$DB = Database::singleton();
+	do {
+		$categoryName = $value['category_name'];
+		if ($value['parent_id'] != 0) {
+			$parent_id = $value['parent_id'];
+			$value = $DB->pselectRow("SELECT * FROM document_repository_categories where id=$parent_id", array());
+			$categoryName = $value['category_name'] . ">" . $categoryName;
+		}
+	} while ($value['parent_id'] != 0);
+	return $categoryName;
+    }
 
     /**
      * Sets the template data for the list of candidates, users, etc.
@@ -226,6 +242,7 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
             $Data_dir = $item['Data_dir'];
             $record_id = $item['record_id'];
             $File_size = $item['File_size'];
+	    $File_category = $item['File_category'];
             foreach ($item as $key => $val) {
 
                 // Confused about this line
@@ -254,7 +271,13 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
        		       $this->tpl_data['items'][$x][$i+2]['name'] = 'record_id_delete';
                    $this->tpl_data['items'][$x][$i+2]['value'] = $record_id;
                 }
-                
+
+
+                if ($key == 'File_category'){
+                   $this->tpl_data['items'][$x][$i]['File_category'] = $File_category;
+                }                
+
+
                $i++;
             }
             $x++;

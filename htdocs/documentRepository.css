@@ -1,3 +1,26 @@
+SPAN.tip {
+    TEXT-DECORATION: none
+}
+SPAN.tip:hover {
+    POSITION: relative
+}
+SPAN.tip SPAN {
+    DISPLAY: none
+}
+SPAN.tip:hover SPAN {
+    POSITION: absolute;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 4px;
+    DISPLAY: block;
+    Z-INDEX: 100;
+    BACKGROUND-color: #816e91;
+    TEXT-DECORATION: none
+    font-size: 10pt;
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
+}
+
 
 TD.tip {
     TEXT-DECORATION: none
@@ -21,6 +44,7 @@ TD.tip:hover SPAN {
     font-size: 10pt;
     filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
 }
+
 
 .ui-dialog, .ui-dialog-buttonpane {
     background: #d4dcd2 !important;
