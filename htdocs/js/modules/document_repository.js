@@ -7,26 +7,25 @@ SITE.fileInputs = function() {
       newVal = valArray[valArray.length-1],
       $button = $this.siblings('.button-file'),
       $fakeFile = $this.siblings('.file-holder');
-  if(newVal !== '') {
+  if (newVal !== '') {
     $button.text('File Chosen');
-    if($fakeFile.length === 0) {
+    if ($fakeFile.length === 0) {
 	if (newVal.length >= 15)
 		newVal = (newVal.substr(0,10)).concat("..."); 
       $button.after('' + newVal + '');
     } else {
-      $fakeFile.text(newVal);
+	$fakeFile.text(newVal);
     }
   }
 };
 
 
-function getParameterByName(name)
-{
+function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regexS = "[\\?&]" + name + "=([^&#]*)";
     var regex = new RegExp(regexS);
     var results = regex.exec(window.location.search);
-    if(results == null)
+    if (results == null)
         return "";
     else
         return decodeURIComponent(results[1].replace(/\+/g, " "));
@@ -39,13 +38,14 @@ $(document).ready(function() {
     //Hide error and success messages on load
     $('.upload-success').hide();
     $('.delete-success').hide();
+    $('.add-success').hide();
     $('.edit-success').hide();
     $('.upload-error').hide();
     $('.file-error').hide();
     $('.no-files').hide();
 
     var uploadSuccess = getParameterByName('uploadSuccess');
-    if (uploadSuccess){
+    if (uploadSuccess) {
 	    $('.upload-success').show();
 	    setTimeout( "$('.upload-success').hide();", 5000 );
     }
@@ -86,11 +86,42 @@ $(document).ready(function() {
          }  
     });
 
+    //Add category dialog
+    $('.addCategory').dialog({ autoOpen: false });
+    $('#addCategory').click(function(){
+        $('.addCategory').dialog('open');
+    });
+
+    $(".addCategory").dialog({
+	buttons : {
+	     "Cancel" : function() {
+                 $(this).dialog("close");
+             },
+             "Add" : function() {
+                 $.ajax({
+                    url: "DocumentRepository/addCategory.php",
+                    type: "POST",
+		    data: $("#addCategoryForm").serialize(),
+                    success: function(){
+                                 $('.add-success').show();
+                                 setTimeout("$('.add-success').hide();", 5000);
+                    },
+                    error:function(jqXHR, textStatus, errorThrown){
+                        console.log("Error: " + textStatus + " " +errorThrown);
+                    }
+                });
+
+                $(this).dialog("close");
+                        return false;
+                }
+         }
+    });
+
     //Upload dialog
     //File input wrapper
     $('.file-wrapper input[type=file]').bind('change focus click', SITE.fileInputs);
 
-    $( ".dialog-form" ).dialog({
+    $(".dialog-form").dialog({
         autoOpen: false,
         height: 500,
         width: 400,
@@ -98,17 +129,17 @@ $(document).ready(function() {
      });
 
     $("#cancelButton").click(function() {
-        $( ".dialog-form" ).dialog( "close" );
+        $(".dialog-form").dialog("close");
     });
 
-    $( "#upload" ).click(function() {
-        $( ".dialog-form" ).dialog( "open" );
+    $("#upload").click(function() {
+        $(".dialog-form").dialog("open");
         return false;
     });
 
 
     //Edit dialog    
-    $( ".dialog-form-edit" ).dialog({
+    $(".dialog-form-edit").dialog({
         autoOpen: false,
         height: 300,
         width: 400,
@@ -126,7 +157,7 @@ $(document).ready(function() {
                 idEdit:id,
                 categoryEdit:$(categoryEdit).val(),
                 siteEdit:$(siteEdit).val(),
-              	instrumentEdit:$(nameEdit).val(),
+              	instrumentEdit:$(instrumentEdit).val(),
                 pscidEdit:$(pscidEdit).val(),
                 visitEdit:$(visitEdit).val(),
                 commentsEdit:$(commentsEdit).val(),
@@ -145,18 +176,18 @@ $(document).ready(function() {
                 }
              });
 
-             $( ".dialog-form-edit" ).dialog( "close" );
+             $(".dialog-form-edit").dialog("close");
 	    }	
 	}
     });
 
     $("#cancelEditButton").click(function() {
-        $( ".dialog-form-edit"  ).dialog( "close" );
+        $(".dialog-form-edit").dialog("close");
     });
 		
     //The Edit file function
-    $( ".theeditlink" ).click(function() {
-        $( ".dialog-form-edit" ).dialog( "open" );
+    $(".theeditlink").click(function() {
+        $(".dialog-form-edit").dialog("open");
         id = this.id;
 
 	    $.ajax({
@@ -170,7 +201,7 @@ $(document).ready(function() {
 	        //Pre-populate the form with the existing values		 
                 SelectElement("categoryEdit", data.File_category);
 	            SelectElement("siteEdit", data.For_site);
-                SelectElement("nameEdit", data.File_name);
+                SelectElement("instrumentEdit", data.Instrument);
 		        SelectElement("pscidEdit", data.PSCID);
 	            SelectElement("visitEdit", data.visitLabel);
 	            SelectElement("commentsEdit", data.comments);
@@ -204,8 +235,7 @@ $(document).ready(function() {
 
 	    if (section_el.is(':visible')) {
             return true;
-	    }
-	    else {
+	    } else {
 	        return false;
 	    }
     }
@@ -222,14 +252,14 @@ $(document).ready(function() {
 	        if (isOpen) {
 	            $(".accordionHeaders").show();
 		        $(this).addClass('selected');
-                count++;
+                    count++;
 	        }    
 	    });
 
-	    if(count<1) { 
+	    if (count<1) { 
 	        $(".accordionHeaders").hide();
 		    $('.no-files').show();
-		    setTimeout( "$('.no-files').hide();", 5000 );
+		    setTimeout("$('.no-files').hide();", 5000 );
 	    }
     }
 
@@ -248,14 +278,14 @@ $(document).ready(function() {
 
 
     function toggleGroup(group) {
-        if(group) {
+        if (group) {
 
             // id is the header that was clicked
             id = group.target.id;
 
             // chop off header_ to get section name
             section = id.substring(7);
-            
+
             // hide (or show) the appropriate div for that section
             section_el = $(".categories_" + section);
             section_el.toggle();
@@ -275,7 +305,7 @@ $(document).ready(function() {
 		            }
 		        });
 		        if (count<1) {
-    	            $(".accordionHeaders").hide();
+    	   		        $(".accordionHeaders").hide();
 		        }
 	        }		
 	    }
@@ -304,9 +334,7 @@ function isEmpty(element) {
 	    element.addClass('missing');
 	    $(".upload-error").show();
 	    return true;
-    }
-
-    else
+    } else
 	    return false;
 }
 
@@ -315,14 +343,11 @@ function isFileEmpty(element) {
     if (element.length == 0) {
 	    $(".file-error").show();	
 	    return true;
-    }
-	
-    else
+    } else
 	    return false;
 }
 
 //Pre-populates the Edit form with fields already associated with that file
-function SelectElement(element, valueToSelect)
-{    
-    $("#" + element + "").val(valueToSelect);
+function SelectElement(element, valueToSelect) {
+	$("#" + element + "").val(valueToSelect);
 }
