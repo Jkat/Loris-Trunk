@@ -105,6 +105,7 @@ $(document).ready(function() {
                     success: function(){
                                  $('.add-success').show();
                                  setTimeout("$('.add-success').hide();", 5000);
+				 setTimeout("location.reload();",5000);
                     },
                     error:function(jqXHR, textStatus, errorThrown){
                         console.log("Error: " + textStatus + " " +errorThrown);
