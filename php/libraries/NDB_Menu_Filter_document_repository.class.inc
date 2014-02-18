@@ -136,11 +136,63 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
         $this->addBasicText('File_name', 'File name:'); 
         $this->addBasicText('version', 'Version:'); 
 
+    $results = array();
+$dbresult= $DB->pselect("SELECT * FROM document_repository_categories order by parent_id asc", array());
+foreach( $dbresult as $row) 
+{ 
+    $results[]=$row;
+//print_r($row);
+//print_r($results[0]);
+
+    $tree = null;
+foreach($results as $result)
+{
+    $thisref = &$refs->{$result['id']};
+    foreach($result as $k => $v)
+    {
+        $thisref->{$k} = $v;
+    }
+    if ($result['parent_id'] == 0) {
+        $tree->{$result['id']} = &$thisref;
+    } else {
+        $refs->{$result['parent_id']}->children->{$result['id']} = &$thisref;
+    }
+}
+
+$tree; // contains the newly sorted tree.
+
+}
+
+echo '<pre>';print_r($tree);echo '</pre>';
+
+
 	$IDCategories = $DB->pselect("SELECT id,category_name,parent_id,comments FROM document_repository_categories order by parent_id", array());	
+
+$IDCategories = json_decode(json_encode($tree), true);
+print_r($IDCategories);
+
+$categoryOrdering = $this->parseTree($IDCategories); 
+echo '<br><br>';
+print_r($categoryOrdering);
+
 	foreach ($IDCategories as $key=>$value) {
 		$fileCategories[$value['id']] = $this->parseCategory($value);
 		$fileComments[$value['id']] = $value['comments'];
 	}
+
+/*
+	foreach ($fileCategoriesTMP as $key=>$value) {
+		if (!(strpos($value, '>'))) {
+			$fileCategories[$value['id']] = $value;
+                        foreach ($fileCategoriesTMP as $key2=>$value2) {
+                                if (strpos($value2, '>') && $this->getBetween($value2,'>') == $value) {
+                                        $fileCategories[$value2['id']] = $value2;
+                                }
+                        }
+		}
+	}
+*/
+	
 //	    $fileCategories = array(null=>'Any', 'abstract'=>'Abstract', 'audio_visual'=>'Audio-visual', 'instrument'=>'Instrument', 'manual'=>'Manual', 'minutes'=>'Minutes', 'paper'=>"Paper", 'presentation'=>'Presentation', 'protocol'=>'Protocol', 'spreadsheet_table'=>'Spreadsheets-Table', 'other'=>'Other');
 
         $this->addSelect('File_type', 'File type:', $fileTypes); 
@@ -157,10 +209,30 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
         return true;
     }
 
+    function getBetween($string,$delim) {
+	$string = explode($delim, $string);
+	return isset($string[0]) ? $string[0] : '';
+    }
+
+var $tmp = array();
+function test_print($item,$key) {
+if ($key == 'id') {
+    echo "$key holds $item\n";
+$this->tmp[]= $item;
+}
+}
+
+    function parseTree($t) {
+foreach ($t as $tt) {
+array_walk_recursive($tt, array($this,'test_print'));
+}
+return $this->tmp;
+    }
+
     function parseCategory($value) {
 	$DB = Database::singleton();
+                $categoryName = $value['category_name'];
 	do {
-		$categoryName = $value['category_name'];
 		if ($value['parent_id'] != 0) {
 			$parent_id = $value['parent_id'];
 			$value = $DB->pselectRow("SELECT * FROM document_repository_categories where id=$parent_id", array());
