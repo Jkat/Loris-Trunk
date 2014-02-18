@@ -252,7 +252,7 @@
 <div class = "add-success">
     <p>
             <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
-            New category successfully added!
+            New category successfully added! Refreshing in 5 seconds...
     </p>
 </div>
 
