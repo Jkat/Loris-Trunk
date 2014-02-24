@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="documentRepository.css"/>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <!--{literal}
 <script language="javascript" type="text/javascript" src = "documentRepository.js"></script>
 {/literal}
@@ -35,6 +36,8 @@
                 
 <br />
 <br />
+
+
 <div class = "ui-accordion ui-widget ui-helper-reset">
 <table border="0" width="80%" id = "accordionTable" class="docRepository" data-open = "{$openAccordion}">
 <tr>
@@ -51,7 +54,7 @@
 {foreach from=$File_categories item=val key=k}
     {if $val != "Any"}
 	<tr>
-        	<td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val|replace:' ':'_'|replace:'>':'_'}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px;">{$val}
+        	<td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val|replace:' ':'_'|replace:'>':'_'}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px; color:black;">{$val}
 			<span class="tip">...
                         {foreach from=$File_comments item=val2 key=k2}
                                 {if $k == $k2}
@@ -100,18 +103,18 @@
 </div>
 </div>
 
-<div class = "dialog">
+
 <form id="addCategory" action="DocumentRepository/addCategory.php" method="POST">
 <div class = "addCategory" title="Add Category">
     <p>
-        <span class="ui-icon ui-icon-trash" style="float:left; margin:0 7px 50px 0;"></span>
-            What category would you like to add?
+        What category would you like to add?
     </p>
-<fieldset id="addCategoryForm" style = "border: none;">
+
+<fieldset id="addCategoryForm" style = "border: none; width:125px !important; height:150px !important;">
 	Category Name: <input type="text" name="category_name" />
 	<br>
 	Parent: 
-        <select name="parent_id" id = "parent_id" class = "form-fields">
+        <select name="parent_id" id="parent_id">
         <option value=" "> </option>
             {foreach from = $File_categories item=val key=k}
                 {if $val != "Any"}
@@ -119,6 +122,7 @@
                     {/if}
             {/foreach}
         </select>
+	<br>
 	Comments: <input type="text" name="comments" />
 </fieldset>
 </div>
@@ -126,8 +130,8 @@
 </div>
 
 
-<div class = "dialog-form" style = "border-style: solid; border-color: #7c7781; border-width:1px; margin: 1em !important; width:350px !important; height:400px !important;" title="Upload new file">
-<form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action = "DocumentRepository/documentEditUpload.php" >
+<div class = "dialog-form" style = "border-style: solid; border-color: #7c7781; border-width:1px; margin: 1em !important; width:390px !important; height:auto !important;" title="Upload new file">
+<form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action = "DocumentRepository/documentEditUpload.php">
 <div class = "upload-error">
     <p style = "color: #f33;">
 	    <span class="ui-icon ui-icon-alert" style = "float:left;"></span>
@@ -171,7 +175,8 @@
 	<label for="file">File<font color="red"><sup> *</sup></font></label>
 	<span class="file-wrapper">
   		<input type="file" name="file" id="file" style = "margin-left: 1em;"/>
-  	<span class="button-file ui-button-text ui-widget ui-state-default ui-corner-all ui-button-text-only eggplant-button" role = "button" aria-disabled = "false" style = "margin-left:10.5em; padding: 0.5em;">Choose file</span>
+  	<span class="button-file ui-button-text ui-widget ui-state-default ui-corner-all ui-button-text-only" role = "button" aria-disabled = "false" style = "margin-left:10.5em; padding: 0.5em;">Choose file</span>
+	<span class="fileName"></span>
     </span>
     </br></br>
 	<label for="version">Version</label>
@@ -182,15 +187,15 @@
 	</fieldset>
 	</br></br>
 	<div class="ui-dialog-buttonset dialog">
-	<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only eggplant-button" id = "cancelButton" role="button" aria-disabled="false" style = "float:right;"><span class="ui-button-text">Cancel</span></button>
-	<button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only eggplant-button" id = "uploadButton" role="button" aria-disabled="false" style = "float:right;"><span class="ui-button-text">Upload</span></button>
+	<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id = "cancelButton" role="button" aria-disabled="false" style = "float:right;"><span class="ui-button-text">Cancel</span></button>
+	<button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id = "uploadButton" role="button" aria-disabled="false" style = "float:right;"><span class="ui-button-text">Upload</span></button>
 	</div>
 </form>
 </div>
 
 
 <!--The Edit Dialog-->
-<div class = "dialog-form-edit dialog" style = "border-style: solid; border-color: #7c7781; border-width:1px; margin: 1em !important; width:350px !important; height:350px !important;" title="Edit file">
+<div class = "dialog-form-edit dialog" style = "border-style: solid; border-color: #7c7781; border-width:1px; margin: 1em !important; width:390px !important; height:300px !important;" title="Edit file">
 <p class="validateTips"></p>
 
 <form name = "editForm" id = "editForm" method = "post"> 
