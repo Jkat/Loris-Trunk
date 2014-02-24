@@ -15,7 +15,8 @@ SPAN.tip:hover SPAN {
     padding: 4px;
     DISPLAY: block;
     Z-INDEX: 100;
-    BACKGROUND-color: #816e91;
+    BACKGROUND-color: white;
+    border: 1px solid black !important;
     TEXT-DECORATION: none
     font-size: 10pt;
     filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
@@ -45,14 +46,6 @@ TD.tip:hover SPAN {
     filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
 }
 
-
-.ui-dialog, .ui-dialog-buttonpane {
-    background: #d4dcd2 !important;
-}
-.ui-dialog-titlebar {
-    background: #a6bca3 !important;
-}
-
 .form-fields {
     float:right;
     size:40;
@@ -67,9 +60,8 @@ TD.tip:hover SPAN {
 }
 
 .selected {
-    background: #5f5964 !important;
+    background: white !important;
     color: #fff;
-    border: 1px solid #7e7783 !important;
 }
 
 .missing {

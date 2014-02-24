@@ -1,6 +1,4 @@
 //Function that deals with custom file upload button: changes text and displays file name when chosen
-var isFileChosen = false;
-var existingFileInputHTML = '';
 var SITE = SITE || {};
 SITE.fileInputs = function() {
   var $this = $(this),
@@ -9,26 +7,18 @@ SITE.fileInputs = function() {
       newVal = valArray[valArray.length-1],
       $button = $this.siblings('.button-file'),
       $fakeFile = $this.siblings('.file-holder');
+  
   if (newVal !== '') {
     $button.text('File Chosen');
     if ($fakeFile.length === 0) {
 	if (newVal.length >= 15)
 		newVal = (newVal.substr(0,10)).concat("..."); 
-	if (!isFileChosen) {
-		existingFileInputHTML = $('.file-wrapper').html();
-		isFileChosen = true;		
-	}
-	$('.file-wrapper').html(existingFileInputHTML);alert(newVal);
-	$('.button-file').after('<span class="fileName">' + newVal + '</span>');
-//        $('.fileName').text('');
-//	$('.fileName').text(newVal);
-	//$button.after('' + newVal + '');
+	$('.fileName').text(newVal);
     } else {
 	$fakeFile.text(newVal);
     }
   }
 };
-
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -44,6 +34,10 @@ function getParameterByName(name) {
 var filtered;
 
 $(document).ready(function() {
+
+   $(function() {
+    $( "#accordion" ).accordion();
+   });
 
     //Hide error and success messages on load
     $('.upload-success').hide();
@@ -135,7 +129,7 @@ $(document).ready(function() {
     $(".dialog-form").dialog({
         autoOpen: false,
         height: 500,
-        width: 400,
+        width: 449,
         modal: true
      });
 
@@ -152,8 +146,8 @@ $(document).ready(function() {
     //Edit dialog    
     $(".dialog-form-edit").dialog({
         autoOpen: false,
-        height: 300,
-        width: 400,
+        height: 500,
+        width: 449,
         modal: true,
         cache: false,
        // close: function() {
@@ -208,7 +202,7 @@ $(document).ready(function() {
             async: false,
 	        dataType: "json",
 	        success: function(data){
-		
+
 	        //Pre-populate the form with the existing values		 
                 SelectElement("categoryEdit", data.File_category);
 	            SelectElement("siteEdit", data.For_site);
