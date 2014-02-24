@@ -1,4 +1,6 @@
 //Function that deals with custom file upload button: changes text and displays file name when chosen
+var isFileChosen = false;
+var existingFileInputHTML = '';
 var SITE = SITE || {};
 SITE.fileInputs = function() {
   var $this = $(this),
@@ -12,7 +14,15 @@ SITE.fileInputs = function() {
     if ($fakeFile.length === 0) {
 	if (newVal.length >= 15)
 		newVal = (newVal.substr(0,10)).concat("..."); 
-      $button.after('' + newVal + '');
+	if (!isFileChosen) {
+		existingFileInputHTML = $('.file-wrapper').html();
+		isFileChosen = true;		
+	}
+	$('.file-wrapper').html(existingFileInputHTML);alert(newVal);
+	$('.button-file').after('<span class="fileName">' + newVal + '</span>');
+//        $('.fileName').text('');
+//	$('.fileName').text(newVal);
+	//$button.after('' + newVal + '');
     } else {
 	$fakeFile.text(newVal);
     }
@@ -120,7 +130,7 @@ $(document).ready(function() {
 
     //Upload dialog
     //File input wrapper
-    $('.file-wrapper input[type=file]').bind('change focus click', SITE.fileInputs);
+    $('.file-wrapper input[type=file]').bind('change', SITE.fileInputs);
 
     $(".dialog-form").dialog({
         autoOpen: false,

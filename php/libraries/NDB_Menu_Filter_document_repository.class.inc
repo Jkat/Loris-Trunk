@@ -12,6 +12,7 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
 {
 
     var $centerIDMap;
+    var $treeToArray = array();
     
     function _hasAccess()
     {
@@ -136,48 +137,39 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
         $this->addBasicText('File_name', 'File name:'); 
         $this->addBasicText('version', 'Version:'); 
 
-    $results = array();
-$dbresult= $DB->pselect("SELECT * FROM document_repository_categories order by parent_id asc", array());
-foreach( $dbresult as $row) 
-{ 
-    $results[]=$row;
-//print_r($row);
-//print_r($results[0]);
+	$results = array();
+	$dbresult= $DB->pselect("SELECT * FROM document_repository_categories order by parent_id asc", array());
+	foreach ($dbresult as $row) {
+		$results[]=$row;
+		$tree = null;
+		foreach ($results as $result) {
+			$thisref = &$refs->{$result['id']};
+			foreach ($result as $k => $v) {
+				$thisref->{$k} = $v;
+			}
+			if ($result['parent_id'] == 0) {
+				$tree->{$result['id']} = &$thisref;
+			} else {
+				$refs->{$result['parent_id']}->children->{$result['id']} = &$thisref;
+			}
+		}
+		$tree; // contains the newly sorted tree.
+	}
 
-    $tree = null;
-foreach($results as $result)
-{
-    $thisref = &$refs->{$result['id']};
-    foreach($result as $k => $v)
-    {
-        $thisref->{$k} = $v;
-    }
-    if ($result['parent_id'] == 0) {
-        $tree->{$result['id']} = &$thisref;
-    } else {
-        $refs->{$result['parent_id']}->children->{$result['id']} = &$thisref;
-    }
-}
-
-$tree; // contains the newly sorted tree.
-
-}
-
-echo '<pre>';print_r($tree);echo '</pre>';
-
+	//echo '<pre>';print_r($tree);echo '</pre>';
 
 	$IDCategories = $DB->pselect("SELECT id,category_name,parent_id,comments FROM document_repository_categories order by parent_id", array());	
+	$tmpIDCategories = $IDCategories;
+	$tmpIDCategories = json_decode(json_encode($tree), true);
+	$categoryOrdering = $this->parseTree($tmpIDCategories); 
 
-$IDCategories = json_decode(json_encode($tree), true);
-print_r($IDCategories);
-
-$categoryOrdering = $this->parseTree($IDCategories); 
-echo '<br><br>';
-print_r($categoryOrdering);
-
-	foreach ($IDCategories as $key=>$value) {
-		$fileCategories[$value['id']] = $this->parseCategory($value);
-		$fileComments[$value['id']] = $value['comments'];
+	foreach ($categoryOrdering as $order) {
+		foreach ($IDCategories as $key=>$value) {
+			if ($value['id'] == $order) {
+				$fileCategories[$value['id']] = $this->parseCategory($value);
+				$fileComments[$value['id']] = $value['comments'];
+			}
+		}
 	}
 
 /*
@@ -214,19 +206,17 @@ print_r($categoryOrdering);
 	return isset($string[0]) ? $string[0] : '';
     }
 
-var $tmp = array();
-function test_print($item,$key) {
-if ($key == 'id') {
-    echo "$key holds $item\n";
-$this->tmp[]= $item;
-}
-}
+    function walkTree($item,$key) {
+	if ($key == 'id') {
+		$this->treeToArray[]= $item;
+	}
+    }
 
-    function parseTree($t) {
-foreach ($t as $tt) {
-array_walk_recursive($tt, array($this,'test_print'));
-}
-return $this->tmp;
+    function parseTree($treeToParse) {
+	foreach ($treeToParse as $theTree) {
+		array_walk_recursive($theTree, array($this,'walkTree'));
+	}
+	return $this->treeToArray;
     }
 
     function parseCategory($value) {
