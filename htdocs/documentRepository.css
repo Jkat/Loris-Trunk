@@ -101,23 +101,6 @@ label em {
     font-size: 100px;
 }
 
-.eggplant-button {
-    padding: .2em .5em;
-}
-
-.eggplant-button:hover {
-    background: #EAE6EA !important;
-    border: 1px solid #D1C5D8 !important;
-    color: #734D99 !important;
-}
-
-.eggplant-button:active {
-    background: #5f5964 !important;
-    border: 1px solid #7e7783 !important; 
-    color: #ffffff !important; 
-    font-weight: bold !important; 
-}
-
 .upload-success {
     font-weight: bold;
     size: 1.1em;
