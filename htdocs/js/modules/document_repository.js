@@ -36,7 +36,7 @@ var filtered;
 $(document).ready(function() {
 
    $(function() {
-    $( "#accordion" ).accordion();
+    $("#accordion").accordion();
    });
 
     //Hide error and success messages on load
@@ -51,7 +51,7 @@ $(document).ready(function() {
     var uploadSuccess = getParameterByName('uploadSuccess');
     if (uploadSuccess) {
 	    $('.upload-success').show();
-	    setTimeout( "$('.upload-success').hide();", 5000 );
+	    setTimeout("$('.upload-success').hide();", 5000);
     }
 
 
@@ -77,7 +77,7 @@ $(document).ready(function() {
                     success: function(){
                         $("#"+id).parent().parent().remove();
 			            $('.delete-success').show();
-			            setTimeout( "$('.delete-success').hide();", 5000 );
+			            setTimeout("$('.delete-success').hide();", 5000);
                     },
                     error:function(jqXHR, textStatus, errorThrown){
                         console.log("Error: " + textStatus + " " +errorThrown);
@@ -264,7 +264,7 @@ $(document).ready(function() {
 	    if (count<1) { 
 	        $(".accordionHeaders").hide();
 		    $('.no-files').show();
-		    setTimeout("$('.no-files').hide();", 5000 );
+		    setTimeout("$('.no-files').hide();", 5000);
 	    }
     }
 
