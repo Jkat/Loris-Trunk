@@ -220,15 +220,20 @@ class NDB_Menu_Filter_document_repository extends NDB_Menu_Filter
     }
 
     function parseCategory($value) {
+	$depth = 0;
 	$DB = Database::singleton();
                 $categoryName = $value['category_name'];
 	do {
 		if ($value['parent_id'] != 0) {
+			$depth += 1;
 			$parent_id = $value['parent_id'];
 			$value = $DB->pselectRow("SELECT * FROM document_repository_categories where id=$parent_id", array());
 			$categoryName = $value['category_name'] . ">" . $categoryName;
 		}
 	} while ($value['parent_id'] != 0);
+	for ($d=0;$d<$depth;$d++) {
+//		$categoryName = "&nbsp;&nbsp;" . $categoryName;
+	}
 	return $categoryName;
     }
 
