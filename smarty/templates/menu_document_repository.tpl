@@ -4,7 +4,6 @@
 <script language="javascript" type="text/javascript" src = "documentRepository.js"></script>
 {/literal}
 -->
-
 <form method="post" action="main.php?filtered=true&test_name=document_repository" id = "filterForm">
 <table border="0" class="std" id = "filterTable" data-filter = "{$filtered}">
     <tr>
@@ -130,7 +129,7 @@
 </div>
 
 
-<div class = "dialog-form" style = "border-style: solid; border-color: #7c7781; border-width:1px; margin: 1em !important; width:390px !important; height:auto !important;" title="Upload new file">
+<div id="uploadArea" class = "dialog-form" style = "border-style: solid; border-color: #7c7781; border-width:1px; margin: 1em !important; width:390px !important; height:auto !important;" title="Upload new file">
 <form name = "uploadForm" id = "uploadForm" method = "POST" enctype="multipart/form-data" action = "DocumentRepository/documentEditUpload.php">
 <div class = "upload-error">
     <p style = "color: #f33;">

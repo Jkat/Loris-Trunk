@@ -20,6 +20,7 @@ SITE.fileInputs = function() {
   }
 };
 
+
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regexS = "[\\?&]" + name + "=([^&#]*)";
