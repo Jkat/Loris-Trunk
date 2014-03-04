@@ -7,7 +7,7 @@
 <form method="post" action="main.php?filtered=true&test_name=document_repository" id = "filterForm">
 <table border="0" class="std" id = "filterTable" data-filter = "{$filtered}">
     <tr>
-        <th nowrap="nowrap" colspan="7">Selection Filter</th>
+        <th nowrap="nowrap" colspan="8">Selection Filter</th>
     </tr>
     <tr>
         <td>{$form.File_name.label}</td>
