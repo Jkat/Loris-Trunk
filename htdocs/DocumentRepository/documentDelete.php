@@ -14,8 +14,15 @@ $rid = $_POST['id'];
 
 $fileName = $DB->pselectOne("Select File_name from document_repository where record_id =:identifier", array(':identifier' => $rid)); 
 $userName = $DB->pselectOne("Select uploaded_by from document_repository where record_id =:identifier", array(':identifier'=> $rid)); 
-$DB->delete("document_repository", array("record_id" => $rid));
 
+$user =& User::singleton();
+if (Utility::isErrorX($user)) {
+        return PEAR::raiseError("User Error: ".$user->getMessage());
+}
+
+if ($user->hasPermission('file_upload')) { //if user has document repository permission
+	$DB->delete("document_repository", array("record_id" => $rid));
+}
 
 $path = "document_repository/" . $userName . "/" . $fileName;
 
