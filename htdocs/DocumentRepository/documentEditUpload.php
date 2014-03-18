@@ -12,8 +12,13 @@ if(PEAR::isError($DB)) {
 
 $action = $_POST['action'];
 
-if ($action == 'upload')
-{
+$userSingleton =& User::singleton();
+if (Utility::isErrorX($userSingleton)) {
+        return PEAR::raiseError("User Error: ".$userSingleton->getMessage());
+}
+
+if ($userSingleton->hasPermission('file_upload')) { //if user has document repository permission
+ if ($action == 'upload') {
 
     $user = $_POST['user'];
     $category = $_POST['category'];
@@ -34,22 +39,19 @@ if ($action == 'upload')
 
     $target_path = $base_path  . $user . "/" . $fileName;
 
-    if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path))
-    {
+    if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path)) {
         $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user, 'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit)); 
 
         header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
     }
 
-    else
-    {
+    else {
         echo "There was an error uploading the file";
     }
 
-}
+ }
 
-elseif ($action == 'edit')
-{
+ elseif ($action == 'edit') {
     $id = $_POST['idEdit'];
     $category = $_POST['categoryEdit'];
     $instrument = $_POST['instrumentEdit'];
@@ -61,7 +63,7 @@ elseif ($action == 'edit')
 
     $values = array('File_category' => $category, 'Instrument' => $instrument, 'For_site' => $site, 'PSCID' => $pscid, 'visitLabel' => $visit, 'comments' => $comments, 'version' => $version); 
     $DB->update('document_repository', $values, array('record_id'=>$id));
-
+ }
 }
 
 ?>
