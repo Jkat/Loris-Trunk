@@ -34,10 +34,30 @@ function getParameterByName(name) {
 
 var filtered;
 
+function editCategory() {
+
+    $('.categorycomments').
+            bind('blur',function(event){
+                event.stopImmediatePropagation();
+                id = event.target.id;
+                value = $("#" + id) .text();
+		$.get("DocumentRepository/categoryEdit.php?id=" + id + "&comments=" + value, function(data) {});
+            }
+    ).keypress(function(e) {
+        if(e.which === 13) { // Determine if the user pressed the enter button
+            $(this).blur();
+        }
+    });
+}
+
 $(document).ready(function() {
 
    $(function() {
     $("#accordion").accordion();
+   });
+
+   $(function() {
+    editCategory();
    });
 
     //Hide error and success messages on load
