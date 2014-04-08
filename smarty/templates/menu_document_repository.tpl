@@ -41,10 +41,10 @@
 <table border="0" width="80%" id = "accordionTable" class="fancytable" data-open = "{$openAccordion}">
 <tr>
     {section name=header loop=$headers}
-        <th nowrap="nowrap" class = "accordionHeaders">
+        <th nowrap="nowrap" class="accordionHeaders">
           <a href="main.php?openAccordion=true&test_name=document_repository&filter[order][field]={$headers[header].name}&filter[order][fieldOrder]={$headers[header].fieldOrder}" class = "sortHeaders">
             {$headers[header].displayName}
-	  </a>&nbsp;
+	  </a>
         </th>
     {/section}
 </tr>
@@ -53,7 +53,7 @@
 {foreach from=$File_categories item=val key=k}
     {if $val != "Any"}
 	<tr>
-        	<td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val|replace:' ':'_'|replace:'>':'_'}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px; color:black;">{$val}
+        	<td nowrap="nowrap" colspan = "11"><h3 id = "header_{$val|replace:' ':'_'|replace:'>':'_'}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px; color:black;" align="left">{$val}
 			<span class="tip">...
                         {foreach from=$File_comments item=val2 key=k2}
                                 {if $k == $k2}
@@ -73,13 +73,13 @@
 		{if $items[item][piece].name == "File_name"}
 		    <td nowrap = "nowrap" class = "{$items[item][piece].name}"><a href="{$items[item][piece].Data_dir}" target="_blank">{$items[item][piece].value}</a> {if !empty($items[item][piece].File_size)}({$items[item][piece].File_size}){/if}</td>
    		{elseif $items[item][piece].name == "record_id"}	
-		    <td nowrap = "nowrap"><a href = "#" id = "{$items[item][piece].value}" class="theeditlink">Edit</a>&nbsp;</td>
+		    <td nowrap = "nowrap"><a href = "#" id = "{$items[item][piece].value}" class="theeditlink">Edit</a></td>
 		{elseif $items[item][piece].name == "record_id_delete"}
 		    <td nowrap = "nowrap"><a href="#" id = "{$items[item][piece].value}" class="thedeletelink">Delete</a></td>
 		{elseif $items[item][piece].name == "comments" && $items[item][piece].value !==" " && $items[item][piece].value !=="" && $items[item][piece].value|strlen > 14}
 		    <td nowrap = "nowrap" class = "tip">{$items[item][piece].value|substr:0:14}...<span>{$items[item][piece].value}</span>&nbsp;</td> 
 		{elseif $items[item][piece].name != "File_category" && $items[item][piece].name != ""}
-		    <td nowrap = "nowrap">{$items[item][piece].value}&nbsp;</td>
+		    <td nowrap = "nowrap">{$items[item][piece].value}</td>
 		{/if}
 	    {/section}
 	</tr>
