@@ -26,7 +26,7 @@
     <tr>
 
         <td colspan="6" align="right"><input type="submit" name="filter" value="Show Data" class="button" />&nbsp;<input type="button" name="reset" value="Clear Form" class="button" onclick="location.href='main.php?test_name=document_repository&reset=true'" /></td>
-	    <td align="right"><button id = "upload" name = "upload" class = "button" style = "background-color: #696">Upload File</button></td>
+	    <td align="right"><button id = "upload" name = "upload" class = "button">Upload File</button></td>
             <td align="right"><button id = "addCategory" name = "addCategory" class = "button" onclick="return false;">Add Category</button></td>
     </tr>
 </table>
@@ -38,7 +38,7 @@
 
 
 <div class = "ui-accordion ui-widget ui-helper-reset">
-<table border="0" width="80%" id = "accordionTable" class="docRepository" data-open = "{$openAccordion}">
+<table border="0" width="80%" id = "accordionTable" class="fancytable" data-open = "{$openAccordion}">
 <tr>
     {section name=header loop=$headers}
         <th nowrap="nowrap" class = "accordionHeaders">
@@ -74,7 +74,6 @@
 		    <td nowrap = "nowrap" class = "{$items[item][piece].name}"><a href="{$items[item][piece].Data_dir}" target="_blank">{$items[item][piece].value}</a> {if !empty($items[item][piece].File_size)}({$items[item][piece].File_size}){/if}</td>
    		{elseif $items[item][piece].name == "record_id"}	
 		    <td nowrap = "nowrap"><a href = "#" id = "{$items[item][piece].value}" class="theeditlink">Edit</a>&nbsp;</td>
-		    <td></td>
 		{elseif $items[item][piece].name == "record_id_delete"}
 		    <td nowrap = "nowrap"><a href="#" id = "{$items[item][piece].value}" class="thedeletelink">Delete</a></td>
 		{elseif $items[item][piece].name == "comments" && $items[item][piece].value !==" " && $items[item][piece].value !=="" && $items[item][piece].value|strlen > 14}
