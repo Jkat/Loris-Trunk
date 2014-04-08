@@ -38,7 +38,7 @@
 
 
 <div class = "ui-accordion ui-widget ui-helper-reset">
-<table border="0" width="80%" id = "accordionTable" class="fancytable" data-open = "{$openAccordion}">
+<table border="0" width="80%" id = "accordionTable" data-open = "{$openAccordion}">
 <tr>
     {section name=header loop=$headers}
         <th nowrap="nowrap" class="accordionHeaders">
