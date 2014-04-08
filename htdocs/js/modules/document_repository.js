@@ -129,8 +129,8 @@ $(document).ready(function() {
 		    data: $("#addCategoryForm").serialize(),
                     success: function(){
                                  $('.add-success').show();
-                                 setTimeout("$('.add-success').hide();", 5000);
-				 setTimeout("location.reload();",5000);
+                                 setTimeout("$('.add-success').hide();", 3000);
+				 setTimeout("location.reload();",3000);
                     },
                     error:function(jqXHR, textStatus, errorThrown){
                         console.log("Error: " + textStatus + " " +errorThrown);
