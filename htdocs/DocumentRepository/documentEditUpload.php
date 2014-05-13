@@ -1,6 +1,7 @@
 <?php
 set_include_path(get_include_path().":../../project/libraries:../../php/libraries:");
 require_once "NDB_Client.class.inc";
+require_once "Email.class.inc";
 $client =& new NDB_Client();
 $client->initialize("../../project/config.xml");
 
@@ -41,7 +42,10 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
 
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path)) {
         $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user, 'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit)); 
-
+//        $msg_data['realname'] = $userSingleton->getData('Real_name');
+        $msg_data['new'] = '';
+	$msg_data['document'] = $fileName;
+	Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
         header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
     }
 
@@ -63,6 +67,11 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
 
     $values = array('File_category' => $category, 'Instrument' => $instrument, 'For_site' => $site, 'PSCID' => $pscid, 'visitLabel' => $visit, 'comments' => $comments, 'version' => $version); 
     $DB->update('document_repository', $values, array('record_id'=>$id));
+
+   $fileName = $DB->pselectOne("select File_name from document_repository where record_id=:record_id", array('record_id'=>$id));
+   $msg_data['updated'] = '';
+   $msg_data['document'] = $fileName;
+   Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
  }
 }
 
