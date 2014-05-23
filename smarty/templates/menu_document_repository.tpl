@@ -4,6 +4,18 @@
 <script language="javascript" type="text/javascript" src = "documentRepository.js"></script>
 {/literal}
 -->
+
+
+<div class="accordion">
+   <h3><a href="#">One</a></h3>
+     <div class="accordion">
+        <h3><a class=href="#">A</a></h3>
+        <div>a</div>
+     </div>
+</div>
+
+
+
 <form method="post" action="main.php?filtered=true&test_name=document_repository" id = "filterForm">
 <table border="0" class="std" id = "filterTable" data-filter = "{$filtered}">
     <tr>
@@ -36,7 +48,6 @@
 <br />
 <br />
 
-
 <div class = "ui-accordion ui-widget ui-helper-reset">
 <table border="0" width="80%" id = "accordionTable" class="docRepository" data-open = "{$openAccordion}">
 <tr>
@@ -48,6 +59,20 @@
         </th>
     {/section}
 </tr>
+
+
+
+<div class="accordion">
+{foreach from=$File_categories item=val key=k}
+   <h3><a href="#">{$val}</a></h3>
+     <div class="accordion">
+        <h3><a class=href="#">A</a></h3>
+        <div>a</div>
+     </div>
+{/foreach}
+</div>
+
+
 
 <div id="accordion" class="ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 {foreach from=$File_categories item=val key=k}
@@ -234,28 +259,28 @@
 <div class = "upload-success">
     <p>
 	    <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
-	    The file was successfully uploaded. Loading changes...
+	    The file was successfully uploaded. Loading changes in 3 seconds...
     </p>
 </div>
 
 <div class = "edit-success">
     <p>
 	    <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
-	    The file was successfully modified. Loading changes...
+	    The file was successfully modified. Loading changes in 3 seconds...
     </p>
 </div>
 
 <div class = "delete-success">
     <p>
 	    <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
-	    The file was successfully deleted. Loading changes...
+	    The file was successfully deleted. Loading changes in 3 seconds...
     </p>
 </div>
 
 <div class = "add-success">
     <p>
             <span class="ui-icon ui-icon-circle-check" style = "float:left;"></span>
-            New category successfully added! Refreshing in 3 seconds...
+            New category successfully added! Loading changes in 3 seconds...
     </p>
 </div>
 
