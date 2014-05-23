@@ -52,8 +52,16 @@ function editCategory() {
 
 $(document).ready(function() {
 
+//   $(function() {
+//    $("#accordion").accordion();
+//   });
+
    $(function() {
-    $("#accordion").accordion();
+     $("div.accordion").accordion({
+       autoHeight: false,
+       collapsible: true,
+       active: false,
+     });
    });
 
    $(function() {
@@ -72,7 +80,7 @@ $(document).ready(function() {
     var uploadSuccess = getParameterByName('uploadSuccess');
     if (uploadSuccess) {
 	    $('.upload-success').show();
-	    setTimeout("$('.upload-success').hide();", 5000);
+	    setTimeout("$('.upload-success').hide();", 3000);
     }
 
 
@@ -98,7 +106,7 @@ $(document).ready(function() {
                     success: function(){
                         $("#"+id).parent().parent().remove();
 			            $('.delete-success').show();
-			            setTimeout("$('.delete-success').hide();", 5000);
+			            setTimeout("$('.delete-success').hide();", 3000);
                     },
                     error:function(jqXHR, textStatus, errorThrown){
                         console.log("Error: " + textStatus + " " +errorThrown);
@@ -198,7 +206,7 @@ $(document).ready(function() {
                 data: data,
  	            success: function(){    
                     $('.edit-success').show();
-                    setTimeout(function() { location.reload() }, 5000);
+                    setTimeout(function() { location.reload() }, 3000);
                 }
              });
 
@@ -285,7 +293,7 @@ $(document).ready(function() {
 	    if (count<1) { 
 	        $(".accordionHeaders").hide();
 		    $('.no-files').show();
-		    setTimeout("$('.no-files').hide();", 5000);
+		    setTimeout("$('.no-files').hide();", 3000);
 	    }
     }
 
