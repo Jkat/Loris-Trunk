@@ -1,6 +1,7 @@
 <?php
 set_include_path(get_include_path().":../../project/libraries:../../php/libraries:");
 require_once "NDB_Client.class.inc";
+require_once "Email.class.inc";
 $client =& new NDB_Client();
 $client->initialize("../../project/config.xml");
 
