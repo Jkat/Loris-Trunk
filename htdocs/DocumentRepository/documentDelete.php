@@ -22,6 +22,9 @@ if (Utility::isErrorX($user)) {
 
 if ($user->hasPermission('file_upload')) { //if user has document repository permission
 	$DB->delete("document_repository", array("record_id" => $rid));
+        $msg_data['deleteDocument'] = '';
+        $msg_data['document'] = $fileName;
+        Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
 }
 
 $path = "document_repository/" . $userName . "/" . $fileName;
