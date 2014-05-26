@@ -43,7 +43,7 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path)) {
         $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user, 'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit)); 
 //        $msg_data['realname'] = $userSingleton->getData('Real_name');
-        $msg_data['new'] = '';
+        $msg_data['newDocument'] = '';
 	$msg_data['document'] = $fileName;
 	Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
         header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
@@ -69,7 +69,7 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
     $DB->update('document_repository', $values, array('record_id'=>$id));
 
    $fileName = $DB->pselectOne("select File_name from document_repository where record_id=:record_id", array('record_id'=>$id));
-   $msg_data['updated'] = '';
+   $msg_data['updatedDocument'] = '';
    $msg_data['document'] = $fileName;
    Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
  }

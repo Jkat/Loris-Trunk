@@ -24,6 +24,9 @@ if (Utility::isErrorX($user)) {
 
 if ($user->hasPermission('file_upload')) { //if user has document repository permission
 	$DB->insert("document_repository_categories", array("category_name" => $category_name, "parent_id"=>$parent_id,"comments"=>$comments));
+        $msg_data['newCategory'] = '';
+        $msg_data['category'] = $category_name;
+        Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
 }
 
 ?>
