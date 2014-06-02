@@ -25,7 +25,11 @@ if ($user->hasPermission('file_upload')) { //if user has document repository per
 	$DB->delete("document_repository", array("record_id" => $rid));
         $msg_data['deleteDocument'] = '';
         $msg_data['document'] = $fileName;
-        Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
+        $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
+        $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());        
+        foreach ($Doc_Repo_Notification_Emails as $email) {
+                Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+        }
 }
 
 $path = "document_repository/" . $userName . "/" . $fileName;
