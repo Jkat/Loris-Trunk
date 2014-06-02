@@ -1,9 +1,12 @@
 <?php
 set_include_path(get_include_path().":../../project/libraries:../../php/libraries:");
 require_once "NDB_Client.class.inc";
+require_once "NDB_Config.class.inc";
 require_once "Email.class.inc";
 $client =& new NDB_Client();
 $client->initialize("../../project/config.xml");
+
+$config = NDB_Config::singleton();
 
 // create Database object
 $DB =& Database::singleton();
@@ -23,7 +26,8 @@ if (Utility::isErrorX($user)) {
 
 if ($user->hasPermission('file_upload')) { //if user has document repository permission
 	$DB->delete("document_repository", array("record_id" => $rid));
-        $msg_data['deleteDocument'] = '';
+        $www = $config->getSetting('www');
+        $msg_data['deleteDocument'] = $www['url'] . "/main.php?test_name=document_repository";
         $msg_data['document'] = $fileName;
         $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
         $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());        

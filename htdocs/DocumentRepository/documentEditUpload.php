@@ -1,9 +1,12 @@
 <?php
 set_include_path(get_include_path().":../../project/libraries:../../php/libraries:");
 require_once "NDB_Client.class.inc";
+require_once "NDB_Config.class.inc";
 require_once "Email.class.inc";
 $client =& new NDB_Client();
 $client->initialize("../../project/config.xml");
+
+$config = NDB_Config::singleton();
 
 // create Database object
 $DB =& Database::singleton();
@@ -43,7 +46,8 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path)) {
         $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user, 'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit)); 
 //        $msg_data['realname'] = $userSingleton->getData('Real_name');
-        $msg_data['newDocument'] = '';
+        $www = $config->getSetting('www');
+        $msg_data['newDocument'] = $www['url'] . "/main.php?test_name=document_repository";
 	$msg_data['document'] = $fileName;
         $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
         $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());        
@@ -73,7 +77,8 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
     $DB->update('document_repository', $values, array('record_id'=>$id));
 
    $fileName = $DB->pselectOne("select File_name from document_repository where record_id=:record_id", array('record_id'=>$id));
-   $msg_data['updatedDocument'] = '';
+   $www = $config->getSetting('www');
+   $msg_data['updatedDocument'] = $www['url'] . "/main.php?test_name=document_repository";
    $msg_data['document'] = $fileName;
    $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
    $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
