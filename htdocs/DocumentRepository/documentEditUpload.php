@@ -45,7 +45,11 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
 //        $msg_data['realname'] = $userSingleton->getData('Real_name');
         $msg_data['newDocument'] = '';
 	$msg_data['document'] = $fileName;
-	Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
+        $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
+        $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());        
+        foreach ($Doc_Repo_Notification_Emails as $email) {
+                Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+        }
         header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
     }
 
@@ -71,7 +75,11 @@ if ($userSingleton->hasPermission('file_upload')) { //if user has document repos
    $fileName = $DB->pselectOne("select File_name from document_repository where record_id=:record_id", array('record_id'=>$id));
    $msg_data['updatedDocument'] = '';
    $msg_data['document'] = $fileName;
-   Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
+   $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
+   $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
+   foreach ($Doc_Repo_Notification_Emails as $email) {
+           Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+   }
  }
 }
 

@@ -27,7 +27,11 @@ if ($user->hasPermission('file_upload')) { //if user has document repository per
 	$DB->insert("document_repository_categories", array("category_name" => $category_name, "parent_id"=>$parent_id,"comments"=>$comments));
         $msg_data['newCategory'] = '';
         $msg_data['category'] = $category_name;
-        Email::send('justin.kat@gmail.com', 'document_repository.tpl', $msg_data);
+        $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
+        $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
+        foreach ($Doc_Repo_Notification_Emails as $email) {
+                Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+        }
 }
 
 ?>
