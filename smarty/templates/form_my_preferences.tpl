@@ -57,6 +57,11 @@
 		<td nowrap="nowrap">Confirm Password</td>
 		<td nowrap="nowrap">{$form.__Confirm.html}</td>
 	</tr>
+        <tr>
+
+                <td nowrap="nowrap">{$form.Doc_Repo_Notifications.label}</td>
+                <td nowrap="nowrap">{$form.Doc_Repo_Notifications.html}</td>
+        </tr>
 
 	<tr>
         <td nowrap="nowrap">&nbsp;</td>
