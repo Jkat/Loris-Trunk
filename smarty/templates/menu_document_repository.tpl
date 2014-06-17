@@ -74,6 +74,12 @@
 
 
 
+
+<br> -----The above is my preliminary attempts at changing look & feel, below has some of the additional features I've mentioned like hovering over the ellipsis for comments on every category title-----
+
+
+
+
 <div id="accordion" class="ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 {foreach from=$File_categories item=val key=k}
     {if $val != "Any"}
