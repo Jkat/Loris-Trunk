@@ -61,6 +61,20 @@
 </tr>
 
 
+{function tree level=0}
+  <ul class="level{$level}">
+  {foreach $data as $entry}
+    {if $entry|strstr:">"}
+      <h3><a href="#">{$entry}</a></h3>
+	  <div class="accordion">
+	      {tree data=$entry level=$level+1}
+    {else}
+      <h3><a href="#">{$entry}</a></h3>
+    {/if}
+  {/foreach}
+  </ul>
+{/function}
+
 
 <div class="accordion">
 {foreach from=$File_categories item=val key=k}
@@ -71,7 +85,6 @@
      </div>
 {/foreach}
 </div>
-
 
 
 
