@@ -75,7 +75,9 @@
   </ul>
 {/function}
 
+{tree data=$File_categories}
 
+<!--
 <div class="accordion">
 {foreach from=$File_categories item=val key=k}
    <h3><a href="#">{$val}</a></h3>
@@ -85,6 +87,8 @@
      </div>
 {/foreach}
 </div>
+-->
+
 
 
 
