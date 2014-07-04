@@ -61,42 +61,6 @@
 </tr>
 
 
-{function tree level=0}
-  <ul class="level{$level}">
-  {foreach $data as $entry}
-    {if $entry|strstr:">"}
-      <h3><a href="#">{$entry}</a></h3>
-	  <div class="accordion">
-	      {tree data=$entry level=$level+1}
-    {else}
-      <h3><a href="#">{$entry}</a></h3>
-    {/if}
-  {/foreach}
-  </ul>
-{/function}
-
-{tree data=$File_categories}
-
-<!--
-<div class="accordion">
-{foreach from=$File_categories item=val key=k}
-   <h3><a href="#">{$val}</a></h3>
-     <div class="accordion">
-        <h3><a class=href="#">A</a></h3>
-        <div>a</div>
-     </div>
-{/foreach}
-</div>
--->
-
-
-
-
-<br> -----The above is my preliminary attempts at changing look & feel, below has some of the additional features I've mentioned like hovering over the ellipsis for comments on every category title-----
-
-
-
-
 <div id="accordion" class="ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 {foreach from=$File_categories item=val key=k}
     {if $val != "Any"}
