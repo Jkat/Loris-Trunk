@@ -23,8 +23,8 @@
     <tr>
 
         <td colspan="6" align="right"><input type="submit" name="filter" value="Show Data" class="button" />&nbsp;<input type="button" name="reset" value="Clear Form" class="button" onclick="location.href='main.php?test_name=document_repository&reset=true'" /></td>
-	    <td align="right"><button id = "upload" name = "upload" class = "button">Upload File</button></td>
-            <td align="right"><button id = "addCategory" name = "addCategory" class = "button" onclick="return false;">Add Category</button></td>
+        <td align="right"><button id = "upload" name = "upload" class = "button">Upload File</button></td>
+        <td align="right"><button id = "addCategory" name = "addCategory" class = "button" onclick="return false;">Add Category</button></td>
     </tr>
 </table>
 </form>
