@@ -51,7 +51,7 @@ if ($userSingleton->hasPermission('file_upload')) {
                                   'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit));
             $www = $config->getSetting('www');
             $msg_data['newDocument'] = $www['url'] . "/main.php?test_name=document_repository";
-	    $msg_data['document'] = $fileName;
+            $msg_data['document'] = $fileName;
             $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
             $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
             foreach ($Doc_Repo_Notification_Emails as $email) {
