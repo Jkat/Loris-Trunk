@@ -10,7 +10,7 @@ $config = NDB_Config::singleton();
 
 // create Database object
 $DB =& Database::singleton();
-if(PEAR::isError($DB)) {
+if (PEAR::isError($DB)) {
     print "Could not connect to database: ".$DB->getMessage()."<br>\n"; die();
 }
 
@@ -18,49 +18,49 @@ $action = $_POST['action'];
 
 $userSingleton =& User::singleton();
 if (Utility::isErrorX($userSingleton)) {
-        return PEAR::raiseError("User Error: ".$userSingleton->getMessage());
+    return PEAR::raiseError("User Error: ".$userSingleton->getMessage());
 }
 
-if ($userSingleton->hasPermission('file_upload')) { //if user has document repository permission
- if ($action == 'upload') {
+//if user has document repository permission
+if ($userSingleton->hasPermission('file_upload')) {
+    if ($action == 'upload') {
+        $user = $_POST['user'];
+        $category = $_POST['category'];
+        $site = $_POST['site'];
+        $instrument = $_POST['instrument'];
+        $pscid = $_POST['pscid'];
+        $visit = $_POST['visit'];
+        $comments = $_POST['comments'];
+        $version = $_POST['version'];
 
-    $user = $_POST['user'];
-    $category = $_POST['category'];
-    $site = $_POST['site'];
-    $instrument = $_POST['instrument'];
-    $pscid = $_POST['pscid'];
-    $visit = $_POST['visit'];
-    $comments = $_POST['comments'];
-    $version = $_POST['version'];
+        $fileSize = $_FILES["file"]["size"];
+        $fileName = $_FILES["file"]["name"];
+        $base_path = "../document_repository/";
 
-    $fileSize = $_FILES["file"]["size"];
-    $fileName = $_FILES["file"]["name"];
-    $base_path = "../document_repository/";
-
-    if (!file_exists($base_path . $user)) {
-        mkdir($base_path . $user, 0777);
-    }
-
-    $target_path = $base_path  . $user . "/" . $fileName;
-
-    if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path)) {
-        $success = $DB->insert('document_repository', array('File_category'=>$category, 'For_site'=>$site, 'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName, 'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user, 'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit)); 
-//        $msg_data['realname'] = $userSingleton->getData('Real_name');
-        $www = $config->getSetting('www');
-        $msg_data['newDocument'] = $www['url'] . "/main.php?test_name=document_repository";
-	$msg_data['document'] = $fileName;
-        $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
-        $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());        
-        foreach ($Doc_Repo_Notification_Emails as $email) {
-                Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+        if (!file_exists($base_path . $user)) {
+            mkdir($base_path . $user, 0777);
         }
-        header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
-    }
 
-    else {
-        echo "There was an error uploading the file";
-    }
+        $target_path = $base_path  . $user . "/" . $fileName;
 
+        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_path)) {
+            $success = $DB->insert('document_repository',
+                            array('File_category'=>$category, 'For_site'=>$site,
+                                  'comments'=>$comments, 'version'=>$version, 'File_name'=>$fileName,
+                                  'File_size'=>$fileSize, 'Data_dir'=>$target_path, 'uploaded_by'=>$user,
+                                  'Instrument'=>$instrument, 'PSCID'=>$pscid, 'visitLabel'=>$visit));
+            $www = $config->getSetting('www');
+            $msg_data['newDocument'] = $www['url'] . "/main.php?test_name=document_repository";
+	    $msg_data['document'] = $fileName;
+            $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
+            $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
+            foreach ($Doc_Repo_Notification_Emails as $email) {
+                Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+            }
+            header("Location: ../main.php?test_name=document_repository&uploadSuccess=true");
+        } else {
+            echo "There was an error uploading the file";
+        }
  }
 
  elseif ($action == 'edit') {
