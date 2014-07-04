@@ -52,10 +52,6 @@ function editCategory() {
 
 $(document).ready(function() {
 
-//   $(function() {
-//    $("#accordion").accordion();
-//   });
-
    $(function() {
      $("div.accordion").accordion({
        autoHeight: false,
