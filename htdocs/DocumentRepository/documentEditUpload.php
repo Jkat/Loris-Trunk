@@ -61,31 +61,31 @@ if ($userSingleton->hasPermission('file_upload')) {
         } else {
             echo "There was an error uploading the file";
         }
- }
+    } elseif ($action == 'edit') {
+        $id = $_POST['idEdit'];
+        $category = $_POST['categoryEdit'];
+        $instrument = $_POST['instrumentEdit'];
+        $site = $_POST['siteEdit'];
+        $pscid = $_POST['pscidEdit'];
+        $visit = $_POST['visitEdit'];
+        $comments = $_POST['commentsEdit'];
+        $version = $_POST['versionEdit'];
 
- elseif ($action == 'edit') {
-    $id = $_POST['idEdit'];
-    $category = $_POST['categoryEdit'];
-    $instrument = $_POST['instrumentEdit'];
-    $site = $_POST['siteEdit'];
-    $pscid = $_POST['pscidEdit'];
-    $visit = $_POST['visitEdit'];
-    $comments = $_POST['commentsEdit'];
-    $version = $_POST['versionEdit'];
+        $values = array('File_category' => $category, 'Instrument' => $instrument, 'For_site' => $site,
+                        'PSCID' => $pscid, 'visitLabel' => $visit, 'comments' => $comments, 'version' => $version);
+        $DB->update('document_repository', $values, array('record_id'=>$id));
 
-    $values = array('File_category' => $category, 'Instrument' => $instrument, 'For_site' => $site, 'PSCID' => $pscid, 'visitLabel' => $visit, 'comments' => $comments, 'version' => $version); 
-    $DB->update('document_repository', $values, array('record_id'=>$id));
-
-   $fileName = $DB->pselectOne("select File_name from document_repository where record_id=:record_id", array('record_id'=>$id));
-   $www = $config->getSetting('www');
-   $msg_data['updatedDocument'] = $www['url'] . "/main.php?test_name=document_repository";
-   $msg_data['document'] = $fileName;
-   $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
-   $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
-   foreach ($Doc_Repo_Notification_Emails as $email) {
-           Email::send($email['Email'], 'document_repository.tpl', $msg_data);
-   }
- }
+        $fileName = $DB->pselectOne("select File_name from document_repository where record_id=:record_id",
+                                     array('record_id'=>$id));
+        $www = $config->getSetting('www');
+        $msg_data['updatedDocument'] = $www['url'] . "/main.php?test_name=document_repository";
+        $msg_data['document'] = $fileName;
+        $query_Doc_Repo_Notification_Emails = "SELECT Email from users where Active='Y' and Doc_Repo_Notifications='Y'";
+        $Doc_Repo_Notification_Emails = $DB->pselect($query_Doc_Repo_Notification_Emails, array());
+        foreach ($Doc_Repo_Notification_Emails as $email) {
+            Email::send($email['Email'], 'document_repository.tpl', $msg_data);
+        }
+    }
 }
 
 ?>
