@@ -324,8 +324,7 @@ $(document).ready(function() {
 	        if(section_el.is(':visible')) {
     	        $(".accordionHeaders").show();
 	            $(this).addClass('selected');
-	        }
-	        else {
+	        } else {
 	    	    $(this).removeClass('selected');
 
 		        $(".categories_header").each(function(idx, el) {
@@ -364,8 +363,9 @@ function isEmpty(element) {
 	    element.addClass('missing');
 	    $(".upload-error").show();
 	    return true;
-    } else
+    } else {
 	    return false;
+    }
 }
 
 //Checks that file has been selected for upload
@@ -373,8 +373,9 @@ function isFileEmpty(element) {
     if (element.length == 0) {
 	    $(".file-error").show();	
 	    return true;
-    } else
+    } else {
 	    return false;
+    }
 }
 
 //Pre-populates the Edit form with fields already associated with that file
