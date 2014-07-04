@@ -35,9 +35,9 @@
 <tr>
     {section name=header loop=$headers}
         <th nowrap="nowrap" class="accordionHeaders">
-          <a href="main.php?openAccordion=true&test_name=document_repository&filter[order][field]={$headers[header].name}&filter[order][fieldOrder]={$headers[header].fieldOrder}" class = "sortHeaders">
-            {$headers[header].displayName}
-	  </a>
+           <a href="main.php?openAccordion=true&test_name=document_repository&filter[order][field]={$headers[header].name}&filter[order][fieldOrder]={$headers[header].fieldOrder}" class = "sortHeaders">
+              {$headers[header].displayName}
+           </a>
         </th>
     {/section}
 </tr>
@@ -262,4 +262,3 @@
 
 </table>
 </div>
-
