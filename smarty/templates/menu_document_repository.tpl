@@ -1,20 +1,5 @@
 <link rel="stylesheet" type="text/css" href="documentRepository.css"/>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<!--{literal}
-<script language="javascript" type="text/javascript" src = "documentRepository.js"></script>
-{/literal}
--->
-
-
-<div class="accordion">
-   <h3><a href="#">One</a></h3>
-     <div class="accordion">
-        <h3><a class=href="#">A</a></h3>
-        <div>a</div>
-     </div>
-</div>
-
-
 
 <form method="post" action="main.php?filtered=true&test_name=document_repository" id = "filterForm">
 <table border="0" class="std" id = "filterTable" data-filter = "{$filtered}">
@@ -45,9 +30,6 @@
 </form>
 
                 
-<br />
-<br />
-
 <div class = "ui-accordion ui-widget ui-helper-reset">
 <table border="0" width="80%" id = "accordionTable" class="docRepository" data-open = "{$openAccordion}">
 <tr>
@@ -78,7 +60,6 @@
 
 {section name=item loop=$items}
     {section name=piece loop=$items[item]}
-	{* if $items[item][piece].value == $k *}
 	{if $items[item][piece].File_category == $k}
 	<tr class="categories_{$val|replace:' ':'_'|replace:'>':'_'} categories ui-accordion ui-widget ui-helper-reset ui-accordion-icons" id = "{$smarty.section.item.index}" style="display:yes">
 	    {section name=piece loop=$items[item]}
@@ -96,7 +77,6 @@
 	    {/section}
 	</tr>
 	{/if}
-	{* /if *}
     {/section}
 {/section}
     </tr>
@@ -282,5 +262,4 @@
 
 </table>
 </div>
-
 
