@@ -129,23 +129,19 @@ label em {
 .upload-success {
     font-weight: bold;
     size: 1.1em;
-/*    color: #696;*/
 }
 
 .edit-success {
     font-weight: bold;
     size: 1.1em;
-/*    color: #696;*/
 }
 
 .delete-success {
     font-weight: bold;
     size: 1.1em;
-/*    color: #696;*/
 }
 
 .no-files {
     font-weight: bold;
     size: 1.1em;
-/*    color: #696;*/
 }
