@@ -31,7 +31,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
     var $centerIDMap;
     var $treeToArray = array();
     
-    function _hasAccess() 
+    function _hasAccess()
     {
         
         //create user object
@@ -44,7 +44,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
     
     }
 
-    function _setupVariables() 
+    function _setupVariables()
     {
         $user =& User::singleton();
         if (Utility::isErrorX($user)) {
@@ -90,7 +90,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
     }
 
 
-    function _setFilterForm() 
+    function _setFilterForm()
     {
         // create user object
         $user =& User::singleton();
@@ -201,20 +201,20 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
         return true;
     }
 
-    function getBetween($string,$delim) 
+    function getBetween($string,$delim)
     {
         $string = explode($delim, $string);
         return isset($string[0]) ? $string[0] : '';
     }
 
-    function walkTree($item,$key) 
+    function walkTree($item,$key)
     {
         if ($key == 'id') {
             $this->treeToArray[]= $item;
         }
     }
 
-    function parseTree($treeToParse) 
+    function parseTree($treeToParse)
     {
         foreach ($treeToParse as $theTree) {
             array_walk_recursive($theTree, array($this,'walkTree'));
@@ -222,7 +222,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
         return $this->treeToArray;
     }
 
-    function parseCategory($value) 
+    function parseCategory($value)
     {
         $depth = 0;
         $DB = Database::singleton();
@@ -245,7 +245,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
      * @throws PEAR_Error
      * @access private
      */
-    function _setDataTable() 
+    function _setDataTable()
     {
         // create instance of config object
         $config =& NDB_Config::singleton();
@@ -291,7 +291,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
 
 
 
-    function _setDataTableRows($count) 
+    function _setDataTableRows($count)
     {
         // This is a hack. It shouldn't be required, and it certainly shouldn't be here.
         $user =& User::singleton();
