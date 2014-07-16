@@ -189,6 +189,7 @@ class NDB_Menu_Filter_Document_Repository extends NDB_Menu_Filter
             }
         }
 
+        $this->tpl_data['File_tree'] = $tmpIDCategories;
         $this->addSelect('File_type', 'File type:', $fileTypes); 
         $this->addSelect('File_category', 'File category:', $fileCategories); 
         $this->tpl_data['File_categories'] = $fileCategories;
