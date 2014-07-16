@@ -29,6 +29,24 @@
 </table>
 </form>
 
+<!--recursive-->
+{function treee}
+ {if is_array($data)}
+  {foreach $data as $element}
+   <div class="accordion">
+   <h3><a href="#">{$element['category_name']}</a></h3>
+   {if isset($element['children'])}
+    {treee data=$element['children']}
+   {/if}
+   </div>
+  {/foreach}
+ {else}
+hi
+ {/if}
+{/function}
+
+{treee data=$File_tree}
+<!--end recursive-->
                 
 <div class = "ui-accordion ui-widget ui-helper-reset">
 <table border="0" width="80%" id = "accordionTable" class="docRepository" data-open = "{$openAccordion}">
