@@ -53,7 +53,7 @@
         <tr>
                 <td nowrap="nowrap" colspan = "11">
                     <h3 id = "header_{$File_categories[$k].CategoryName|replace:' ':'_'|replace:'>':'_'}" class="categories_header ui-accordion-header ui-helper-reset  ui-state-default ui-corner-all" style="background-color: #e0dde2; padding: 3px; color:black;" align="left">{$File_categories[$k].CategoryName}
-                        <span class="tip">
+                        <span class="tip">...
                             <span id="categorycomment{$k}" class="categorycomments" name="headercomment_{$File_categories[$k].CategoryName|replace:' ':'_'|replace:'>':'_'}" contentedit  able="true">
                                 {$File_categories[$k].Comment}
                             </span>
